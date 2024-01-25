@@ -16,8 +16,8 @@
 
 sysdate=$(date +%d%m%Y)
 
-mysql_user="root"
-mysql_password="vatiku41"
+mysql_user="test"
+mysql_password="test"
 
 mysql_script="/root/scripts/mysql.sql"
 output_path="/var/lib/mysql-files/"
