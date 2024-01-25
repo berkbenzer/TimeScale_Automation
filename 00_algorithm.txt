@@ -1,0 +1,56 @@
+
+DROP OLD CHUNKS FROM TIMESCALE DATABASE
+
+1-) Mysql Part
+    1.a-) Connect to the launcher database
+    1.b-) Check vm name and status and the sysdate(Only Sundays)
+    1.c-) if the select returns data based on the "who" and "start_time" create file and 
+              write into the directory /var/lib/mysql-files/
+          else:
+            break
+         
+         Rundeck job should not continue
+         Check for the rundeck workflow to stop running based on the output
+            --If there is no  output workflow stop
+
+
+2-) Bash script part:
+    2.a-)If there is a file under the /var/lib/mysql-files/ directory read the file
+            2.a.1-) If the file has the string 'dropped' under the index[6]:
+                    break
+                else:
+                  2.a.1.a-)  If the file has been created and 'dropped' string has not written into the file yet
+                the rundeck job can move on to the other section
+        else:
+            trigger the mysql.sql and create the file.
+    
+
+
+3-) PostgreSQL part: Script has to be dynamic
+    3.a-) du -sh /var/lib/pgsql put into dictionary OS_DISK Space dictionary
+    3.b-) Connect to the postgres and corresponding database
+    3.c-) Check sessions from platform user and the postgres user
+    3.d-) if there is a statement drop chunks:
+              break 
+          else:    
+            3.d.1-) Kill all the sessions
+            3.d.2-) Check hyper table and put retention policies into list
+            3.d.3-) Execute drop old chunks 
+            3.d.4-) append new os partition size to OS_DISK Space dictonary
+            3.d.5-) Close the connection
+    3.e) Mail can be send with related partition size
+
+4-) If all the steps completed another job in rundeck has to insert data to he file under
+    /var/lib/mysql-files/. chunck_status dropped.
+    
+#####RUNDECK PART######
+1-) Bash script will be executed.
+2-) Check the directory /var/lib/mysql-files/ if there is a file under the directory which the file
+    postfix same with the sysdate then trigger the next job
+3-) PostgreSQL part has to be executed
+4-) Mail can be send with the information
+    - Calculated table size
+    - Daily data frequency
+        table_size / chunk_count or size of chunk
+    - Size estimation for the partition 
+        table size / chunk_coun
