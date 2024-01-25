@@ -2,7 +2,7 @@
 DROP OLD CHUNKS FROM TIMESCALE DATABASE
 
 1-) Mysql Part
-    1.a-) Connect to the launcher database
+    1.a-) Connect to the platform_action_history database
     1.b-) Check vm name and status and the sysdate(Only Sundays)
     1.c-) if the select returns data based on the "who" and "start_time" create file and 
               write into the directory /var/lib/mysql-files/
@@ -53,4 +53,4 @@ DROP OLD CHUNKS FROM TIMESCALE DATABASE
     - Daily data frequency
         table_size / chunk_count or size of chunk
     - Size estimation for the partition 
-        table size / chunk_coun
+        table size / chunk_count
