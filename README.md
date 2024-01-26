@@ -1,4 +1,4 @@
-Retention policies getting time out due to too many reads from the timescale database. This automation was made because the failure of retention policies to 
+Retention policies getting time out due to too many read connections which remain in the timescale database. This automation was made because the failure of retention policies to 
 work increases the disk usage on the system.
 The general approach is to implement a Python program that recognizes when the application has been restarted.
 
